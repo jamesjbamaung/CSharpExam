@@ -1,0 +1,47 @@
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<h1>You made it to the Activity Form page</h1>
+<p><a href="/logout">Logout</a></p>
+<p><a href="/account/@ViewBag.userInSession.UserId">Dashboard</a></p>
+@model Activity
+<span asp-validation-for="Title"></span><br>
+<span asp-validation-for="Description"></span><br>
+<span asp-validation-for="ActivityDate"></span><br>
+<form asp-action="AddActivity" asp-controller="Home" method="post">
+
+    <label asp-for="Title"></label>
+    <input asp-for="Title">
+    <br>
+
+
+    <label asp-for="ActivityDate"></label>
+    <input asp-for="ActivityDate" class="selector">
+    <br>
+
+
+    <label asp-for="Time"></label>
+    <input asp-for="Time">
+    <br>
+
+
+    <label asp-for="Duration"></label>
+    <input asp-for="Duration">
+    <br>
+
+    <select asp-for="DurationFormat">
+        <option value="Minute">Minute</option>
+        <option value="Hour">Hour</option>
+        <option value="Day">Day</option>
+    </select>
+
+    <label asp-for="Description"></label>
+    <input asp-for="Description">
+    <br>
+
+    <input type="hidden" name="UserId" value="@ViewBag.user">
+
+    <input type="submit" value="Add Activity">
+</form>

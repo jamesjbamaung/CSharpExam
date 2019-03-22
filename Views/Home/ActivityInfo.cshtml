@@ -1,0 +1,53 @@
+<h1>@ViewBag.act.Title </h1>
+
+
+<p><a href="/logout">Logout</a></p>
+<p><a href="/account/@ViewBag.User.UserId">Dashboard</a></p>
+
+          @if(ViewBag.act.UserId == ViewBag.id)
+          {
+            <a href="/delete/@ViewBag.act.ActivityId">Delete</a>
+          }
+          @if(ViewBag.act.listOfGuests.Count == 0)
+          {
+            <a href="/rsvp/@ViewBag.act.ActivityId/@ViewBag.id">RSVP</a>
+          }
+          else if(ViewBag.act.listOfGuests.Count > 0)
+          {
+            bool rsvp = false;
+            int actId = 0;
+
+            @foreach(var guest in ViewBag.act.listOfGuests)
+            {
+              @if(guest.User.UserId == ViewBag.id)
+              {
+                rsvp = true;
+                actId = guest.RSVPId;
+              }
+            }
+            @if(rsvp == true)
+            {
+              <a href="/cancel/@actId">Un RSVP</a>
+            }
+            else if(rsvp == false)
+            {
+              <a href="/rsvp/@ViewBag.act.ActivityId/@ViewBag.id">RSVP</a>
+            }
+          }
+
+
+<h2>Date: @ViewBag.act.ActivityDate</h2>
+
+
+<h3>Event Coordinator: @ViewBag.act.User.FirstName</h3>
+
+
+<h3>Description</h3>
+<h6>@ViewBag.act.Description</h6>
+
+
+<h3>List of Guests:</h3>
+@foreach(var guest in ViewBag.act.listOfGuests)
+{
+    <p>@guest.User.FirstName @guest.User.LastName</p>
+}

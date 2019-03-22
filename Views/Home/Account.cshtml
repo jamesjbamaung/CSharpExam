@@ -1,0 +1,90 @@
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<h1>Welocome to the Activity Board</h1>
+<p><a href="/logout">Logout</a></p>
+<button><a href="/activityform">Add an Activity</a></button>
+<h2>Hello @ViewBag.User.FirstName</h2>
+
+<table>
+  <tr>
+    <th>Wedding</th>
+    <th>Date and Time</th>
+    <th>Duration</th>
+    <th>Event Coordinator</th>
+    <th>Attendees</th>
+    <th>Action</th>
+  </tr>
+  
+@foreach(var act in ViewBag.listOfActs)
+{   DateTime CurrentTime = DateTime.Now;
+    string dateDisplay =  act.ActivityDate.ToString("MM/dd");
+    string timeDisplay = act.Time.ToString("hh:mm tt");
+    if(act.ActivityDate < CurrentTime)
+    {
+    }
+    else
+    {
+    <tr>
+        <td><a href="/activity/@act.ActivityId">@act.Title</a></td>
+        <td>@dateDisplay at @timeDisplay</td>
+        <td>@act.Duration @act.DurationFormat</td>
+        <td>@act.User.FirstName</td>
+        <td>@act.listOfGuests.Count</td>
+        <td>
+          @if(act.UserId == ViewBag.id)
+          {
+            <a href="/delete/@act.ActivityId">Delete</a>
+          }
+          @if(act.listOfGuests.Count == 0)
+          {
+            <a href="/rsvp/@act.ActivityId/@ViewBag.id">RSVP</a>
+          }
+          @if(act.listOfGuests.Count > 0)
+          {
+            bool rsvp = false;
+            int actId = 0;
+
+            @foreach(var guest in act.listOfGuests)
+            {
+              @if(guest.User.UserId == ViewBag.id)
+              {
+                rsvp = true;
+                actId = guest.RSVPId;
+              }
+            }
+            @if(rsvp == true)
+            {
+              <a href="/cancel/@actId">Un RSVP</a>
+            }
+            @if(rsvp == false)
+            {
+              <a href="/rsvp/@act.ActivityId/@ViewBag.id">RSVP</a>
+            }
+          }
+
+        </td>
+  </tr>
+    }
+
+
+
+}
+
+</table>
